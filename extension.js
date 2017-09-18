@@ -2,21 +2,22 @@
 // Import the module and reference it with the alias vscode in your code below
 var vscode = require('vscode');
 var linterService = require('./linterService');
+var config = vscode.workspace.getConfiguration();
 
 const linterDecorationType = vscode.window.createTextEditorDecorationType({
 //    isWholeLine: true,
     borderWidth: '2px',
     borderStyle: 'solid',
-    color: 'red',
-    overviewRulerColor: 'red',
+    color: config.linter.ErrorColor,
+    overviewRulerColor: config.linter.OverviewRulerColor,
     overviewRulerLane: vscode.OverviewRulerLane.Right,
     light: {
         // this color will be used in light color themes
-        borderColor: 'red'
+        borderColor: config.linter.ErrorColor
     },
     dark: {
         // this color will be used in dark color themes
-        borderColor: 'red'
+        borderColor: config.linter.ErrorColor
     }
 });
 
@@ -31,7 +32,7 @@ function activate(context) {
     // The command has been defined in the package.json file
     // Now provide the implementation of the command with  registerCommand
     // The commandId parameter must match the command field in package.json
-    var disposable = vscode.commands.registerCommand('extension.sayHello', function() {
+    var disposable = vscode.commands.registerCommand('extension.lightningLinter', function() {
         // The code you place here will be executed every time your command is executed
 
         // Display a message box to the user
@@ -46,6 +47,9 @@ function activate(context) {
         linterService.lintFile(text).then(function(results){
             var lintResults = JSON.parse(results),
                 decorations = [];
+            if(lintResults.length === 0){
+                vscode.window.showInformationMessage('Good job, you are lightning lint free!');
+            }
             for(var i=0; i<lintResults.length;i++){
                 var lintResult = lintResults[i];
                 decorations.push(decorate(lintResult) );

@@ -1,5 +1,9 @@
 // linterService.js
 var http = require('http');
+var vscode = require('vscode');
+var config = vscode.workspace.getConfiguration();
+console.log('config.linterOrigin',config.linterOrigin);
+
 exports.hello = function() {
     return "Hello";
 }
@@ -7,13 +11,13 @@ exports.hello = function() {
 exports.lintFile = function(content){
     var headers = {
         'Content-Type': 'text/plain',
-        'Origin': 'https://lightning-linter.herokuapp.com/lint_code',
+        'Origin': config.linter.Origin,
         'Accept': 'text/plain, */*; q=0.01',
         'Connection': 'keep-alive'
     }
     var options = {
-        host: 'lightning-linter.herokuapp.com',
-        path: '/lint-json',
+        host: config.linter.Host,
+        path: config.linter.Path,
         method: 'POST',
         headers: headers
     };

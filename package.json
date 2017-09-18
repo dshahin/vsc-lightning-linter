@@ -2,7 +2,7 @@
     "name": "lightning-linter",
     "displayName": "lightning-linter",
     "description": "utilize lightning linter service",
-    "version": "0.0.1",
+    "version": "0.3.0",
     "publisher": "dshahin",
     "engines": {
         "vscode": "^1.16.0"
@@ -11,14 +11,47 @@
         "Other"
     ],
     "activationEvents": [
-        "onCommand:extension.sayHello"
+        "onCommand:extension.lightningLinter"
     ],
     "main": "./extension",
     "contributes": {
-        "commands": [{
-            "command": "extension.sayHello",
-            "title": "Lightning Linter"
-        }]
+        "commands": [
+            {
+                "command": "extension.lightningLinter",
+                "title": "Lightning Linter"
+            }
+        ],
+        "configuration": {
+            "type": "object",
+            "title": "Lightning Linter configuration",
+            "properties": {
+                "linter.Origin": {
+                    "type": "string",
+                    "default": "https://lightning-linter.herokuapp.com/lint_code",
+                    "description": "Specifies the origin for linter service"
+                },
+                "linter.Host": {
+                    "type": "string",
+                    "default": "lightning-linter.herokuapp.com",
+                    "description": "Specifies the host for linter service"
+                },
+                "linter.Path": {
+                    "type": "string",
+                    "default": "/lint-json",
+                    "description": "Specifies the path for linter service"
+                },
+                "linter.ErrorColor": {
+                    "type": "string",
+                    "default": "red",
+                    "description": "Specifies the path for linter service"
+                },
+                "linter.OverviewRulerColor": {
+                    "type": "string",
+                    "default": "purple",
+                    "description": "Specifies the path for linter service"
+                }
+            }
+        }
     },
     "scripts": {
         "postinstall": "node ./node_modules/vscode/bin/install",
